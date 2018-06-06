@@ -1,0 +1,21 @@
+.wrapper {
+    width: 200px;
+    height: 198px;
+    text-align: center;
+    border: black solid;
+    margin: auto;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2px;
+    grid-auto-rows: minmax(48px, auto);
+}
+
+.common {
+    background-color: coral;
+}
+h4 {
+    text-align: center;
+}
