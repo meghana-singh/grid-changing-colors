@@ -6,7 +6,6 @@ const timeChange = 2000;
 
 var gridHash = {};
 var gridSize = gridX * gridY;
-var gridColor = 'red';
 
 init();
 
@@ -21,6 +20,7 @@ function createGridHash() {
     gridHash[gridId] = {};
     gridHash[gridId]['red'] = null;
     gridHash[gridId]['blue'] = null;
+    gridHash[gridId]['color'] = 'red';
   }
 }
 
@@ -33,16 +33,25 @@ function createHTMLGrid(){
     newDivElem.setAttribute('class', 'common');
   }    
 }
-
+//Creates a gridArray with the sqaures that are eligible for change.
+//Randomly selects one of the grids from the gridArray for change.
+//This way every 250ms one valid grids/square changes color.
 function changeGridColors() {
-  var gridId = Math.floor(Math.random() * gridSize);
-  var gridTime = gridHash[gridId][gridColor];
-  var timeNow = Date.now();
-  var timeDifference = timeNow - gridTime;
-  if (timeDifference > timeChange || gridTime == null) {
-    var gridElem = document.getElementById(gridId);
-    gridElem.style.backgroundColor = gridColor;
-    gridColor = gridColor == 'red' ? 'blue' : 'red';
-    gridHash[gridId][gridColor] = timeNow;      
-  } 
+  var gridArray = [];
+  for(let gridId=0; gridId<gridSize; gridId++) {
+    var gridColor = gridHash[gridId]['color'];
+    var gridTime = gridHash[gridId][gridColor];
+    var timeNow = Date.now();
+    var timeDifference = timeNow - gridTime;
+    if (timeDifference > timeChange || gridTime == null) {
+      gridArray.push(gridId);
+    }
+  }
+  var gridId = gridArray[Math.floor(Math.random() * gridArray.length)];
+  var gridElem = document.getElementById(gridId);
+  var gridElemColor = gridElem.style.backgroundColor;
+  gridColor = gridElemColor == 'red' ? 'blue' : 'red';
+  gridElem.style.backgroundColor = gridColor;
+  gridHash[gridId][gridColor] = timeNow;      
+  gridHash[gridId]['color'] = gridColor;
 }
